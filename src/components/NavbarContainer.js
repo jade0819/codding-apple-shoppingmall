@@ -1,15 +1,18 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { useNavigate } from "react-router-dom";
 
 const NavbarContainer = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar expand="lg" bg="light" data-bs-theme="light">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Navbar.Brand href="/">Navbar</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
@@ -18,19 +21,23 @@ const NavbarContainer = () => {
             }}
           >
             <Nav className="me-end">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#features">Features</Nav.Link>
-              <Nav.Link href="#pricing">Pricing</Nav.Link>
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link onClick={() => navigate("/detail")}>Shoes</Nav.Link>
+              <Nav.Link onClick={() => navigate("/event")}>Event</Nav.Link>
+              <Nav.Link onClick={() => navigate("/about")}>About</Nav.Link>
+              <Nav.Link onClick={() => navigate("/cart")}>Cart</Nav.Link>
+              <Nav.Link onClick={() => navigate("/qna")}>Q&A</Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link href="myProfile">내 프로필</Nav.Link>
-              <NavDropdown title="고객지원" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Q&A</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">1:1 문의</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  찾아오시는 길
+              <NavDropdown title="내 정보" id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={() => navigate("/mypage")}>
+                  마이페이지
                 </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/cart")}>
+                  장바구니
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/">로그아웃</NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
