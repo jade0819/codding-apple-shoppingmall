@@ -9,7 +9,7 @@ const Detail = ({ shoes }) => {
     return <List data={shoes} />;
   }
 
-  const data = shoes.filter((item) => item.id === Number(id))[0];
+  const data = shoes.find((item) => item.id == id);
   if (!data) return <NotFound />;
 
   return (
