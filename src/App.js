@@ -6,7 +6,7 @@ import Card from "./components/Card.js";
 import "./App.css";
 import data from "./data.js";
 import { Routes, Route } from "react-router-dom";
-import Detail from "./routes/Detail.js";
+import Detail from "./pages/Detail.js";
 import About from "./pages/About.js";
 import Event from "./pages/Event.js";
 
@@ -26,14 +26,15 @@ function App() {
               <Container>
                 <Row>
                   {shoes.map((item, index) => {
-                    return <Card item={item} index={index} />;
+                    return <Card item={item} index={index} key={item.id} />;
                   })}
                 </Row>
               </Container>
             </main>
           }
         />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail" element={<Detail shoes={shoes} />} />
+        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="/cart" element={<div>장바구니</div>} />
         <Route path="/mypage" element={<div>마이페이지</div>} />
         <Route path="/about" element={<About />}>

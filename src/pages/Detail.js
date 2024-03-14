@@ -1,12 +1,25 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import List from "../components/List";
+import NotFound from "./NotFound";
 
-const Detail = () => {
+const Detail = ({ shoes }) => {
+  const { id } = useParams();
+  if (!id) {
+    return <List data={shoes} />;
+  }
+
+  const data = shoes.filter((item) => item.id === Number(id))[0];
+  if (!data) return <NotFound />;
+
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-6">
           <img
-            src="https://codingapple1.github.io/shop/shoes1.jpg"
+            src={`https://codingapple1.github.io/shop/shoes${
+              Number(id) + 1
+            }.jpg`}
             alt="shoes"
             width="100%"
           />
