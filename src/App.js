@@ -13,6 +13,7 @@ import axios from "axios";
 import "./App.css";
 import data from "./data.js";
 import Products from "./pages/Products.js";
+import Cart from "./pages/Cart.js";
 
 function App() {
   const [shoes, setShoes] = useState(data);
@@ -64,7 +65,7 @@ function App() {
         />
         <Route path="/detail" element={<Products shoes={shoes} />} />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-        <Route path="/cart" element={<div>장바구니</div>} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/mypage" element={<div>마이페이지</div>} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>} />

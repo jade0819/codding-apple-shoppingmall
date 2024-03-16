@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { createContext, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -9,9 +9,13 @@ import Detail from "./routes/Detail";
 import List from "./components/List.js";
 import NotFound from "./routes/NotFound.js";
 import axios from "axios";
+import Cart from "./routes/Cart.js";
+
+export let Context1 = createContext();
 
 function App() {
   let [shoes, setShoes] = useState(data);
+  let [재고] = useState([10, 11, 12]);
   let [loading, setLoading] = useState(false);
   let [moreData, setMoreData] = useState(2);
   let navigate = useNavigate();
@@ -24,6 +28,7 @@ function App() {
           <Nav className="me-auto">
             <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => navigate("/detail")}>Detail</Nav.Link>
+            <Nav.Link onClick={() => navigate("/cart")}>Cart</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -71,8 +76,24 @@ function App() {
             </>
           }
         />
-        <Route path="/detail" element={<Detail shoes={shoes} />} />
-        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+
+        <Route
+          path="/detail"
+          element={
+            <Context1.Provider value={{ 재고, shoes }}>
+              <Detail shoes={shoes} />
+            </Context1.Provider>
+          }
+        />
+        <Route
+          path="/detail/:id"
+          element={
+            <Context1.Provider value={{ 재고, shoes }}>
+              <Detail shoes={shoes} />
+            </Context1.Provider>
+          }
+        />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>} />
         </Route>

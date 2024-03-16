@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import NotFound from "../routes/NotFound";
 import List from "../components/List";
 import Nav from "react-bootstrap/Nav";
+import { Context1 } from "../App2.js";
 
 const Detail = ({ shoes }) => {
+  let { 재고 } = useContext(Context1);
+
   const { id } = useParams();
   const { pathname } = useLocation();
 
@@ -57,6 +60,7 @@ const Detail = ({ shoes }) => {
         <div className="alert alert-warning">2초이내 구매 시 할인</div>
       )}
 
+      {재고[0]}
       <div className="container">
         <div className="row">
           <div className="col-md-6">
