@@ -8,9 +8,12 @@ import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./routes/Detail";
 import List from "./components/List.js";
 import NotFound from "./routes/NotFound.js";
+import axios from "axios";
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
+  let [loading, setLoading] = useState(false);
+  let [moreData, setMoreData] = useState(2);
   let navigate = useNavigate();
 
   return (
@@ -32,6 +35,39 @@ function App() {
             <>
               <div className="main-bg"></div>
               <List data={shoes} />
+              {loading && <p>로딩 중...</p>}
+              <button
+                onClick={() => {
+                  if (moreData === 4) {
+                    alert("상품이 없습니다.");
+                    return;
+                  }
+
+                  setLoading(true);
+
+                  axios
+                    .get(
+                      `https://codingapple1.github.io/shop/data${moreData}.json`
+                    )
+                    .then((결과) => {
+                      console.log(결과.data);
+
+                      const timer = setTimeout(() => {
+                        const copy = [...shoes, ...결과.data];
+                        setShoes(copy);
+                        setLoading(false);
+
+                        if (moreData === 2) setMoreData(3);
+                        else setMoreData(4);
+                      }, 1000);
+
+                      return () => clearTimeout(timer);
+                    })
+                    .catch(() => console.log("실패함ㅅㄱ"));
+                }}
+              >
+                더보기
+              </button>
             </>
           }
         />

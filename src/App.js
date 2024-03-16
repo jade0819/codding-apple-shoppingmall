@@ -1,104 +1,79 @@
-// import { useState } from "react";
-// import NavbarContainer from "./components/NavbarContainer";
-// import Container from "react-bootstrap/Container";
-// import Row from "react-bootstrap/Row";
-// import Card from "./components/Card.js";
-// import "./App.css";
-// import data from "./data.js";
-// import { Routes, Route } from "react-router-dom";
-// import Detail from "./pages/Detail.js";
-// import About from "./pages/About.js";
-// import Event from "./pages/Event.js";
-
-// function App() {
-//   const [shoes] = useState(data);
-
-//   return (
-//     <div className="App">
-//       <NavbarContainer />
-
-//       <Routes>
-//         <Route
-//           path="/"
-//           element={
-//             <main>
-//               <div className="main-bg" />
-//               <Container>
-//                 <Row>
-//                   {shoes.map((item, index) => {
-//                     return <Card item={item} index={index} key={item.id} />;
-//                   })}
-//                 </Row>
-//               </Container>
-//             </main>
-//           }
-//         />
-//         <Route path="/detail" element={<Detail shoes={shoes} />} />
-//         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-//         <Route path="/cart" element={<div>장바구니</div>} />
-//         <Route path="/mypage" element={<div>마이페이지</div>} />
-//         <Route path="/about" element={<About />}>
-//           <Route path="member" element={<div>멤버임</div>} />
-//         </Route>
-//         <Route path="/event" element={<Event />}>
-//           <Route path="one" element={<p>첫 주문시 양배추즙 서비스</p>}></Route>
-//           <Route path="two" element={<p>생일기념 쿠폰받기</p>}></Route>
-//         </Route>
-//         <Route path="*" element={<div>페이지 없음</div>} />
-//       </Routes>
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import { useState } from "react";
-import Navbar from "react-bootstrap/Navbar";
+import NavbarContainer from "./components/NavbarContainer";
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Card from "./components/Card.js";
+import Loading from "./components/Loading.js";
+import { Routes, Route } from "react-router-dom";
+import Detail from "./pages/Detail.js";
+import About from "./pages/About.js";
+import Event from "./pages/Event.js";
+import styled from "styled-components";
+import axios from "axios";
 import "./App.css";
 import data from "./data.js";
-import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
-import Detail from "./routes/Detail";
-import List from "./components/List.js";
-import NotFound from "./routes/NotFound.js";
+import Products from "./pages/Products.js";
 
 function App() {
-  let [shoes] = useState(data);
-  let navigate = useNavigate();
+  const [shoes, setShoes] = useState(data);
+  const [moreDataURL, setMoreDataURL] = useState(2);
+  const [loading, setLoading] = useState(false);
+
+  const getData = () => {
+    if (moreDataURL === 4) {
+      alert("상품이 없습니다.");
+      return;
+    }
+
+    setLoading(true);
+
+    axios
+      .get(`https://codingapple1.github.io/shop/data${moreDataURL}.json`)
+      .then((res) => {
+        const copy = [...shoes, ...res.data];
+        setShoes(copy);
+
+        setMoreDataURL((prev) => prev + 1);
+        setLoading(false);
+      })
+      .catch(() => console.log("실패"));
+  };
 
   return (
     <div className="App">
-      <Navbar bg="light" variant="light">
-        <Container>
-          <Navbar.Brand href="/">ShoesShop</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
-            <Nav.Link onClick={() => navigate("/detail")}>Detail</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
+      <NavbarContainer />
 
       <Routes>
         <Route
           path="/"
           element={
-            <>
-              <div className="main-bg"></div>
-              <List data={shoes} />
-            </>
+            <main>
+              <div className="main-bg" />
+              <Container>
+                <Row>
+                  {shoes.map((item, index) => {
+                    return <Card item={item} index={index} key={item.id} />;
+                  })}
+                </Row>
+              </Container>
+
+              {loading && <Loading />}
+              <MoreBtn onClick={() => getData()}>more</MoreBtn>
+            </main>
           }
         />
-        <Route path="/detail" element={<Detail shoes={shoes} />} />
+        <Route path="/detail" element={<Products shoes={shoes} />} />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+        <Route path="/cart" element={<div>장바구니</div>} />
+        <Route path="/mypage" element={<div>마이페이지</div>} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>} />
         </Route>
-        <Route path="/event" element={<EventPage />}>
+        <Route path="/event" element={<Event />}>
           <Route path="one" element={<p>첫 주문시 양배추즙 서비스</p>}></Route>
           <Route path="two" element={<p>생일기념 쿠폰받기</p>}></Route>
         </Route>
-        <Route path="/*" element={<NotFound />} />
+        <Route path="*" element={<div>페이지 없음</div>} />
       </Routes>
     </div>
   );
@@ -106,20 +81,14 @@ function App() {
 
 export default App;
 
-function About() {
-  return (
-    <div>
-      <h4>회사정보임</h4>
-      <Outlet></Outlet>
-    </div>
-  );
-}
-
-function EventPage() {
-  return (
-    <div>
-      <h4>오늘의 이벤트</h4>
-      <Outlet></Outlet>
-    </div>
-  );
-}
+const MoreBtn = styled.button`
+  font-size: 14px;
+  padding: 4px 6px;
+  margin: 20px 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  &:hover {
+    background-color: #fafafa;
+  }
+`;

@@ -1,36 +1,136 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import NotFound from "../routes/NotFound";
 import List from "../components/List";
+import Nav from "react-bootstrap/Nav";
 
 const Detail = ({ shoes }) => {
   const { id } = useParams();
+  const { pathname } = useLocation();
+
+  let [eventMsg, setEventMsg] = useState(true);
+  let [탭, 탭변경] = useState(0);
+  let [num, setNum] = useState("");
+  let [fade, setFade] = useState("");
+
+  useEffect(() => {
+    let a = setTimeout(() => setFade("end"), 10);
+
+    return () => {
+      clearTimeout(a);
+      setFade("");
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    let a = setTimeout(() => {
+      setEventMsg(false);
+    }, 3000);
+
+    return () => {
+      setEventMsg(true);
+      clearTimeout(a);
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    if (isNaN(num) == true) {
+      alert("그러지마세요");
+    }
+  }, [num]);
+
   if (!id) {
-    return <List data={shoes} />;
+    // /detail page
+    return (
+      <div className={`start ${fade}`}>
+        <List data={shoes} />
+      </div>
+    );
   }
 
-  const data = shoes.find((item) => item.id == id);
-  if (!data) return <NotFound />;
+  const 찾은상품 = shoes.find((item) => item.id == id);
+  if (!찾은상품) return <NotFound />;
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-6">
-          <img
-            src={`https://codingapple1.github.io/shop/shoes${
-              Number(id) + 1
-            }.jpg`}
-            alt="shoes"
-            width="100%"
-          />
+    <div className={`start ${fade}`}>
+      {eventMsg && (
+        <div className="alert alert-warning">2초이내 구매 시 할인</div>
+      )}
+
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <img
+              src={`https://codingapple1.github.io/shop/shoes${
+                Number(id) + 1
+              }.jpg`}
+              alt="shoes"
+              width="100%"
+            />
+          </div>
+          <div className="col-md-6">
+            <h4 className="pt-5">{찾은상품.title}</h4>
+            <p>{찾은상품.content}</p>
+            <p>{찾은상품.price}원</p>
+            <p>
+              수량:
+              <input
+                type="text"
+                value={num}
+                onChange={(e) => setNum(e.target.value)}
+              />
+            </p>
+            <button className="btn btn-danger">주문하기</button>
+          </div>
         </div>
-        <div className="col-md-6">
-          <h4 className="pt-5">{data.title}</h4>
-          <p>{data.content}</p>
-          <p>{data.price}원</p>
-          <button className="btn btn-danger">주문하기</button>
-        </div>
+
+        <Nav variant="tabs" defaultActiveKey="link0">
+          <Nav.Item>
+            <Nav.Link eventKey="link0" onClick={() => 탭변경(0)}>
+              버튼0
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link1" onClick={() => 탭변경(1)}>
+              버튼1
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link2" onClick={() => 탭변경(2)}>
+              버튼2
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+
+        <TabContent 탭={탭} />
       </div>
+    </div>
+  );
+};
+
+const TabContent = ({ 탭 }) => {
+  let [fade, setFade] = useState("");
+
+  useEffect(() => {
+    let a = setTimeout(() => setFade("end"), 100);
+
+    return () => {
+      clearTimeout(a);
+      setFade("");
+    };
+  }, [탭]);
+
+  // if (탭 === 0) {
+  //   return <div>내용0</div>;
+  // } else if (탭 === 1) {
+  //   return <div>내용1</div>;
+  // } else {
+  //   return <div>내용2</div>;
+  // }
+
+  return (
+    <div className={`start ${fade}`}>
+      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][탭]}
     </div>
   );
 };
