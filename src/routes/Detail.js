@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import NotFound from "../routes/NotFound";
-import List from "../components/List";
+import NotFound from "./NotFound.js";
+import List from "../components/List.js";
 import Nav from "react-bootstrap/Nav";
 import { Context1 } from "../App2.js";
+import { useDispatch } from "react-redux";
+import { addItem } from "../store2/cartSlice2.js";
 
 const Detail = ({ shoes }) => {
   let { 재고 } = useContext(Context1);
@@ -13,8 +15,10 @@ const Detail = ({ shoes }) => {
 
   let [eventMsg, setEventMsg] = useState(true);
   let [탭, 탭변경] = useState(0);
-  let [num, setNum] = useState("");
+  let [num, setNum] = useState(1);
   let [fade, setFade] = useState("");
+
+  let dispatch = useDispatch();
 
   useEffect(() => {
     let a = setTimeout(() => setFade("end"), 10);
@@ -81,10 +85,23 @@ const Detail = ({ shoes }) => {
               <input
                 type="text"
                 value={num}
-                onChange={(e) => setNum(e.target.value)}
+                onChange={(e) => setNum(Number(e.target.value))}
               />
             </p>
-            <button className="btn btn-danger">주문하기</button>
+            <button
+              className="btn btn-danger"
+              onClick={() =>
+                dispatch(
+                  addItem({
+                    id: 찾은상품.id,
+                    name: 찾은상품.title,
+                    count: num,
+                  })
+                )
+              }
+            >
+              주문하기
+            </button>
           </div>
         </div>
 

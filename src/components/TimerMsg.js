@@ -10,7 +10,7 @@ const TimerMsg = () => {
     }, 2000);
 
     return () => clearTimeout(timer);
-  });
+  }, []);
 
   return <>{msg && <Msg>2초이내 구매 시 할인</Msg>}</>;
 };

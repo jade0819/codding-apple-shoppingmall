@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import NotFound from "./NotFound";
-import TimerMsg from "../components/TimerMsg";
 import Nav from "react-bootstrap/Nav";
+import { useDispatch } from "react-redux";
+import TimerMsg from "../components/TimerMsg";
 import TabContent from "../components/TabContent";
 import AnimFade from "../components/AnimFade";
+import NotFound from "./NotFound";
+import { addCartItem } from "../store/cartSlice";
 
 const Detail = ({ shoes }) => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(1);
   const [tab, setTab] = useState(0);
 
   const data = shoes.find((item) => item.id === Number(id));
@@ -17,9 +20,9 @@ const Detail = ({ shoes }) => {
 
   const onValidationCheck = (value) => {
     if (isNaN(value)) {
-      alert("그러지마세요");
+      alert("숫자를 입력해주세요.");
     } else {
-      setInput(value);
+      setInput(Number(value));
     }
   };
 
@@ -36,18 +39,31 @@ const Detail = ({ shoes }) => {
             />
           </div>
           <div className="col-md-6">
-            <h4 className="pt-5">상품명</h4>
-            <p>상품설명</p>
-            <p>120000원</p>
+            <h4 className="pt-5">{data.title}</h4>
+            <p>{data.content}</p>
+            <p>{data.price}원</p>
             <p>
-              수량:{" "}
+              수량:
               <input
                 type="text"
                 value={input}
                 onChange={(e) => onValidationCheck(e.target.value)}
               />
             </p>
-            <button className="btn btn-danger">주문하기</button>
+            <button
+              className="btn btn-danger"
+              onClick={() =>
+                dispatch(
+                  addCartItem({
+                    id: data.id,
+                    name: data.title,
+                    count: input,
+                  })
+                )
+              }
+            >
+              주문하기
+            </button>
           </div>
         </div>
 

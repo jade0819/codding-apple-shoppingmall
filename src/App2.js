@@ -5,11 +5,11 @@ import Nav from "react-bootstrap/Nav";
 import "./App.css";
 import data from "./data.js";
 import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
-import Detail from "./routes/Detail";
+import Detail from "./routes/Detail.js";
+import Cart from "./routes/Cart.js";
 import List from "./components/List.js";
 import NotFound from "./routes/NotFound.js";
 import axios from "axios";
-import Cart from "./routes/Cart.js";
 
 export let Context1 = createContext();
 

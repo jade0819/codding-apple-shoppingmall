@@ -1,19 +1,19 @@
 import { useState } from "react";
-import NavbarContainer from "./components/NavbarContainer";
+import axios from "axios";
+import { Routes, Route } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Card from "./components/Card.js";
-import Loading from "./components/Loading.js";
-import { Routes, Route } from "react-router-dom";
-import Detail from "./pages/Detail.js";
-import About from "./pages/About.js";
-import Event from "./pages/Event.js";
 import styled from "styled-components";
-import axios from "axios";
+import NavbarContainer from "./components/NavbarContainer";
+import Card from "./components/Card";
+import Loading from "./components/Loading";
+import Products from "./pages/Products";
+import Detail from "./pages/Detail";
+import Cart from "./pages/Cart";
+import About from "./pages/About";
+import Event from "./pages/Event";
+import data from "./data";
 import "./App.css";
-import data from "./data.js";
-import Products from "./pages/Products.js";
-import Cart from "./pages/Cart.js";
 
 function App() {
   const [shoes, setShoes] = useState(data);
