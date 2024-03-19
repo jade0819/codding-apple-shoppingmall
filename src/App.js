@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import Container from "react-bootstrap/Container";
@@ -14,8 +14,15 @@ import About from "./pages/About";
 import Event from "./pages/Event";
 import data from "./data";
 import "./App.css";
+import WatchedProducts from "./components/WatchedProducts";
 
 function App() {
+  useEffect(() => {
+    if (localStorage.getItem("watched") === null) {
+      localStorage.setItem("watched", JSON.stringify([]));
+    }
+  }, []);
+
   const [shoes, setShoes] = useState(data);
   const [moreDataURL, setMoreDataURL] = useState(2);
   const [loading, setLoading] = useState(false);
@@ -60,10 +67,11 @@ function App() {
 
               {loading && <Loading />}
               <MoreBtn onClick={() => getData()}>more</MoreBtn>
+              <WatchedProducts data={shoes} />
             </main>
           }
         />
-        <Route path="/detail" element={<Products shoes={shoes} />} />
+        <Route path="/detail" element={<Products data={shoes} />} />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/mypage" element={<div>마이페이지</div>} />

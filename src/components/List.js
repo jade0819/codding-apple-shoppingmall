@@ -2,16 +2,13 @@ import React from "react";
 import Card from "./Card";
 
 const List = ({ data }) => {
-  if (data.length <= 0) {
-    return <div>목록 없음</div>;
-  }
-
   return (
     <div className="container">
       <div className="row">
-        {data.map((a, i) => {
-          return <Card item={data[i]} index={i} key={data[i].id}></Card>;
-        })}
+        {data.length > 0 &&
+          data.map((item, index) => {
+            return <Card item={item} index={index} key={item.id}></Card>;
+          })}
       </div>
     </div>
   );

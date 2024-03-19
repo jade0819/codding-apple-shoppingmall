@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,14 @@ const Detail = ({ shoes }) => {
 
   const [input, setInput] = useState(1);
   const [tab, setTab] = useState(0);
+
+  useEffect(() => {
+    const watchedData = JSON.parse(localStorage.getItem("watched"));
+    watchedData.push(id);
+    const uniqueWatchedData = [...new Set(watchedData)];
+
+    localStorage.setItem("watched", JSON.stringify(uniqueWatchedData));
+  }, [id]);
 
   const data = shoes.find((item) => item.id === Number(id));
   if (!data) return <NotFound />;

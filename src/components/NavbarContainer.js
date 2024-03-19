@@ -12,7 +12,7 @@ const NavbarContainer = () => {
     <>
       <Navbar expand="lg" bg="light" data-bs-theme="light">
         <Container>
-          <Navbar.Brand href="/">Navbar</Navbar.Brand>
+          <Navbar.Brand href="/">High Shoes</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
@@ -22,19 +22,19 @@ const NavbarContainer = () => {
           >
             <Nav className="me-end">
               <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
+              <Nav.Link onClick={() => navigate("/about")}>About</Nav.Link>
               <Nav.Link onClick={() => navigate("/detail")}>Shoes</Nav.Link>
               <Nav.Link onClick={() => navigate("/event")}>Event</Nav.Link>
-              <Nav.Link onClick={() => navigate("/about")}>About</Nav.Link>
+
               <Nav.Link onClick={() => navigate("/cart")}>Cart</Nav.Link>
-              <Nav.Link onClick={() => navigate("/qna")}>Q&A</Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown title="내 정보" id="basic-nav-dropdown">
                 <NavDropdown.Item onClick={() => navigate("/mypage")}>
                   마이페이지
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate("/cart")}>
-                  장바구니
+                <NavDropdown.Item onClick={() => navigate("/qna")}>
+                  Q&A
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="/">로그아웃</NavDropdown.Item>

@@ -21,6 +21,15 @@ const Detail = ({ shoes }) => {
   let dispatch = useDispatch();
 
   useEffect(() => {
+    let 꺼낸거 = localStorage.getItem("watched");
+    꺼낸거 = JSON.parse(꺼낸거);
+    꺼낸거.push(id);
+    꺼낸거 = new Set(꺼낸거);
+    꺼낸거 = Array.from(꺼낸거);
+    localStorage.setItem("watched", JSON.stringify(꺼낸거));
+  }, []);
+
+  useEffect(() => {
     let a = setTimeout(() => setFade("end"), 10);
 
     return () => {
@@ -32,7 +41,7 @@ const Detail = ({ shoes }) => {
   useEffect(() => {
     let a = setTimeout(() => {
       setEventMsg(false);
-    }, 3000);
+    }, 2000);
 
     return () => {
       setEventMsg(true);

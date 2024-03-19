@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -10,10 +10,17 @@ import Cart from "./routes/Cart.js";
 import List from "./components/List.js";
 import NotFound from "./routes/NotFound.js";
 import axios from "axios";
+import WatchedProducts from "./components/WatchedProducts.js";
 
 export let Context1 = createContext();
 
 function App() {
+  useEffect(() => {
+    if (!localStorage.getItem("watched")) {
+      localStorage.setItem("watched", JSON.stringify([]));
+    }
+  }, []);
+
   let [shoes, setShoes] = useState(data);
   let [재고] = useState([10, 11, 12]);
   let [loading, setLoading] = useState(false);
@@ -73,6 +80,7 @@ function App() {
               >
                 더보기
               </button>
+              <WatchedProducts data={shoes} />
             </>
           }
         />
