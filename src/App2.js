@@ -11,6 +11,7 @@ import List from "./components/List.js";
 import NotFound from "./routes/NotFound.js";
 import axios from "axios";
 import WatchedProducts from "./components/WatchedProducts.js";
+import { useQuery } from "react-query";
 
 export let Context1 = createContext();
 
@@ -27,6 +28,15 @@ function App() {
   let [moreData, setMoreData] = useState(2);
   let navigate = useNavigate();
 
+  let result = useQuery("작명", () => {
+    return axios
+      .get("https://codingapple1.github.io/userdata.json")
+      .then((a) => {
+        console.log("요청됨");
+        return a.data;
+      });
+  });
+
   return (
     <div className="App">
       <Navbar bg="light" variant="light">
@@ -36,6 +46,11 @@ function App() {
             <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => navigate("/detail")}>Detail</Nav.Link>
             <Nav.Link onClick={() => navigate("/cart")}>Cart</Nav.Link>
+          </Nav>
+          <Nav className="ms-auto">
+            {result.isLoading && "로딩중"}
+            {result.error && "에러남"}
+            {result.data && result.data.name}
           </Nav>
         </Container>
       </Navbar>
