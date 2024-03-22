@@ -15,17 +15,17 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
+      {/* <Provider store={store}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </Provider>
+      </Provider> */}
 
-      {/* <Provider store={store2}>
+      <Provider store={store2}>
         <BrowserRouter>
           <App2 />
         </BrowserRouter>
-      </Provider> */}
+      </Provider>
     </QueryClientProvider>
   </React.StrictMode>
 );

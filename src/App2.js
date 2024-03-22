@@ -16,6 +16,7 @@ import NotFound from "./routes/NotFound.js";
 import axios from "axios";
 import WatchedProducts from "./components/WatchedProducts.js";
 import { useQuery } from "react-query";
+import UseTransitionTest from "./components/UseTransitionTest.js";
 
 const Detail = lazy(() => import("./routes/Detail.js"));
 const Cart = lazy(() => import("./routes/Cart.js"));
@@ -61,6 +62,8 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
+
+      {/* <UseTransitionTest /> */}
 
       <Routes>
         <Route
