@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import Container from "react-bootstrap/Container";
@@ -7,14 +7,15 @@ import styled from "styled-components";
 import NavbarContainer from "./components/NavbarContainer";
 import Card from "./components/Card";
 import Loading from "./components/Loading";
-import Products from "./pages/Products";
-import Detail from "./pages/Detail";
-import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Event from "./pages/Event";
 import data from "./data";
 import "./App.css";
 import WatchedProducts from "./components/WatchedProducts";
+
+const Cart = lazy(() => import("./pages/Cart"));
+const Detail = lazy(() => import("./pages/Detail"));
+const Products = lazy(() => import("./pages/Products"));
 
 function App() {
   useEffect(() => {
@@ -71,9 +72,30 @@ function App() {
             </main>
           }
         />
-        <Route path="/detail" element={<Products data={shoes} />} />
-        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/detail"
+          element={
+            <Suspense fallback={<div>로딩중...</div>}>
+              <Products data={shoes} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/detail/:id"
+          element={
+            <Suspense fallback={<div>로딩중...</div>}>
+              <Detail shoes={shoes} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <Suspense fallback={<div>로딩중...</div>}>
+              <Cart />
+            </Suspense>
+          }
+        />
         <Route path="/mypage" element={<div>마이페이지</div>} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>} />

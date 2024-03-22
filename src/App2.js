@@ -1,17 +1,24 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, {
+  Suspense,
+  createContext,
+  lazy,
+  useEffect,
+  useState,
+} from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import "./App.css";
 import data from "./data.js";
 import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
-import Detail from "./routes/Detail.js";
-import Cart from "./routes/Cart.js";
 import List from "./components/List.js";
 import NotFound from "./routes/NotFound.js";
 import axios from "axios";
 import WatchedProducts from "./components/WatchedProducts.js";
 import { useQuery } from "react-query";
+
+const Detail = lazy(() => import("./routes/Detail.js"));
+const Cart = lazy(() => import("./routes/Cart.js"));
 
 export let Context1 = createContext();
 
@@ -104,7 +111,9 @@ function App() {
           path="/detail"
           element={
             <Context1.Provider value={{ 재고, shoes }}>
-              <Detail shoes={shoes} />
+              <Suspense fallback={<div>로딩중임</div>}>
+                <Detail shoes={shoes} />
+              </Suspense>
             </Context1.Provider>
           }
         />
@@ -112,11 +121,20 @@ function App() {
           path="/detail/:id"
           element={
             <Context1.Provider value={{ 재고, shoes }}>
-              <Detail shoes={shoes} />
+              <Suspense fallback={<div>로딩중임2</div>}>
+                <Detail shoes={shoes} />
+              </Suspense>
             </Context1.Provider>
           }
         />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/cart"
+          element={
+            <Suspense fallback={<div>장바구니 페이지 로딩중임</div>}>
+              <Cart />
+            </Suspense>
+          }
+        />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>} />
         </Route>
